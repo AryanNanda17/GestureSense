@@ -86,32 +86,32 @@ We generally prefer ReLU function
 
 Types of activation functions : 
 
-![Alt text](image-2.png)
+![](image-2.png)
 
 tanh works better for hidden layers than sigmoid functions
 
 #Derivatives of activation functions : 
 sigmoid 
-![Alt text](image-3.png)
+![](image-3.png)
 
 tanh : 
-![Alt text](image-4.png)
-![Alt text](image-7.png)
+![](image-4.png)
+![](image-7.png)
 
-![Alt text](image-6.png)
+![](image-6.png)
 
 
 # DEEP NEURAL NETWORKS
 
 
-![Alt text](image-8.png)
+![](image-8.png)
 
 Generalised notation 
-![Alt text](image-9.png)
+![](image-9.png)
 
 We can generalise matrix dimensions as follwos : 
-![Alt text](image-12.png)
-![Alt text](image-11.png)
+![](image-12.png)
+![](image-11.png)
 
 
 
