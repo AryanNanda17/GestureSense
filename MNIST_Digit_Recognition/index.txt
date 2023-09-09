@@ -1,0 +1,1 @@
+Recognises digit from available MNIST Data Set of handwritten digits
