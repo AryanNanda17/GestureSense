@@ -71,7 +71,7 @@
 3. So, your training sets will be written (x1,y1) which is the input and output for the first training example, (x2,y2) is the input and output of the second training example, (xm,ym) is your last training example.
 4. To write this is the number of training examples, we will write m subscript train.
 5. when we talk about the test set we will write m sub-script test to denote the number of test examples.
-6. To output all of the training examples, we will define a matrix capital X which takes all the training inputs and stack them in columns.
+6. To output all of the training examples, we will define a matrix captureital X which takes all the training inputs and stack them in columns.
 7. This matrix X has m columns and where m is the number of training examples and the number of rows is n subscript x.
 8. Hence X is a nx * m dimensional matrix.
 9. Output of X is Y which is also stacked in columns.

@@ -1,11 +1,11 @@
 import cv2 as cv
 
-capture = cv.VideoCapture(1)  
+captureture = cv.Videocapture(1)  
 
 BackGroundSubtractor = cv.createBackgroundSubtractorMOG2()
 
 while True:
-    ret, frame = capture.read()
+    ret, frame = captureture.read()
 
     ForeGroundMask = BackGroundSubtractor.apply(frame)
     # cv.imshow("foreground mask",ForeGroundMask)
@@ -23,5 +23,5 @@ while True:
     if cv.waitKey(20) & 0xFF == ord('d'):
         break
 
-capture.release()
+captureture.release()
 cv.destroyAllWindows()

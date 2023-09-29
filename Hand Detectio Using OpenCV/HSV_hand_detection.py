@@ -1,10 +1,10 @@
 import cv2 as cv
 import numpy as np
 
-capture = cv.VideoCapture(1)
+captureture = cv.Videocapture(1)
 
 while True:
-    ret, frame = capture.read()
+    ret, frame = captureture.read()
     hsv_image = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
     lower_limit = np.array([0,20,70])
@@ -23,5 +23,5 @@ while True:
 
     if cv.waitKey(20) & 0xFF==ord('d'):
         break
-capture.release()
+captureture.release()
 cv.destroyAllWindows()
