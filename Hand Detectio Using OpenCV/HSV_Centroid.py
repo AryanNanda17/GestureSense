@@ -25,7 +25,7 @@ while True:
             max_area = area
             largest_contour = contour
 
-    if max_area > 100s :
+    if max_area > 100 :
         x, y, w, h = cv.boundingRect(largest_contour)
         cv.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 255), 3)
 
