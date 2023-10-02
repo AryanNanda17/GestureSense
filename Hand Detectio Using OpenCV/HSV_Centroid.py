@@ -3,11 +3,20 @@ import numpy as np
 
 capture = cv.VideoCapture(1)
 
+# Center crop for 720 * 1280 screen
+height, width = 720, 1280
+crop_height, crop_width = 500, 600 
+# coordinates of the top-left corner of the crop
+x1 = (width - crop_width) // 2
+y1 = (height - crop_height) // 2
+
 while True:
 
     isTrue, frame = capture.read()
 
-    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    # roi = frame[160:560, 440:840]
+    roi = frame[:, x1:x1+crop_width]
+    hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV)
 
     lower_range = np.array([0, 20, 70], dtype=np.uint8)
     upper_range = np.array([20, 255, 255], dtype=np.uint8)
@@ -27,12 +36,12 @@ while True:
 
     if max_area > 100 :
         x, y, w, h = cv.boundingRect(largest_contour)
-        cv.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 255), 3)
+        cv.rectangle(roi, (x, y), (x + w, y + h), (255, 0, 255), 3)
 
         # Finding Centroid of hand
         Centroid = cv.moments(largest_contour)
         if (Centroid["m00"] != 0):
-            cv.circle(frame, ( int(Centroid["m10"] / Centroid["m00"] + 1e-5), int(Centroid["m01"] / Centroid["m00"] + 1e-5) ), 5, (0, 0, 255), -1)
+            cv.circle(roi, ( int(Centroid["m10"] / Centroid["m00"] + 1e-5), int(Centroid["m01"] / Centroid["m00"] + 1e-5) ), 5, (0, 0, 255), -1)
 
     cv.imshow('Hand Detection', frame)
 
@@ -41,3 +50,6 @@ while True:
 
 capture.release()
 cv.destroyAllWindows()
+
+
+
