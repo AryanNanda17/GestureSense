@@ -5,7 +5,8 @@ capture = cv.VideoCapture(1)
 
 # Center crop for 720 * 1280 screen
 height, width = 720, 1280
-crop_height, crop_width = 500, 600 
+crop_height, crop_width = 650, 800 
+
 # coordinates of the top-left corner of the crop
 x1 = (width - crop_width) // 2
 y1 = (height - crop_height) // 2
@@ -13,9 +14,9 @@ y1 = (height - crop_height) // 2
 while True:
 
     isTrue, frame = capture.read()
-
+    cv.rectangle(frame, (x1, y1), (x1 + crop_width, y1 + crop_height), (0, 0, 255), 2)
     # roi = frame[160:560, 440:840]
-    roi = frame[:, x1:x1+crop_width]
+    roi = frame[y1:y1+crop_height, x1:x1+crop_width]
     hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV)
 
     lower_range = np.array([0, 20, 70], dtype=np.uint8)
