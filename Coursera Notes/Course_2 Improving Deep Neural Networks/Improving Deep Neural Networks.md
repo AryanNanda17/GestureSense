@@ -2,9 +2,9 @@
 - When training a neural network you have to make a lot of decisions such as how many hidden units, how many layers, activation function, and learning rate.
 - ML is a highly iterative process, in which you often start with an idea, then code up and then experiment with it and based on the results you make changes and carry out the same process
 - Guessing the best choice of hyperparameters at the very first time is almost impossible.
-- Hence today Applied ML is a very iterative process.![[Improving Deep Neural Networks/Images_Course2/img1.png]]
+- Hence today Applied ML is a very iterative process.![[Improving Deep Neural Networks/./Images_Course2/img1.png]]
 - So, one of the main things that determines how quickly you can make progress is how efficiently you can go through this cycle of idea, code and experiment.
-![](Images_Course2/img1.png)
+![](./Images_Course2/img1.png)
 - Also setting up your dataset in train, dev and test can make you much more efficient.
 - We train algorithms on our training set and use the dev set or the hold-out cross-validation set to see which of many validation sets is performing well, 
 - Then you can take the best model you have and evaluate it on your test set in order to get an unbiased result of how your algorithm is performing.
@@ -13,9 +13,9 @@
 - But, in the modern age where we have a lot of data, the dev and test set has become a very small percentage of the total.
 - Because the dev set needs only that much data to decide which algorithm is better.
 - And the test set is only for giving us an estimate of how well our algorithm is doing so not much data.
-![](Images_Course2/img2.png)
+![](./Images_Course2/img2.png)
 - If we have 1 million training examples, then the distribution is like 10,000 for dev and 10,000 for test and rest for training. Hence 98% - 1% - 1%.
-- **Dev and Test Set must come from the same distribution**. This will make learning faster. For example Images_Course2 from the same site.
+- **Dev and Test Set must come from the same distribution**. This will make learning faster. For example ./Images_Course2 from the same site.
 - Sometimes not having a test set is okay. 
 - If you only have a dev set and not a test set then you try different model architectures evaluate them on the dev set and use that to iterate and get to a good model.
 - Generally, when we don't have any test set and we have only a dev set, then we call that dev set a test set, and we must be careful about that.
@@ -23,9 +23,9 @@
 # High bias and High Variance
 > -  Low bias and large variation: Overfitting occurs when the algorithm produces widely diverse predictions for the same data.
 > -  High bias, low variance: Underfitting occurs when the algorithm produces comparable predictions for similar data, but the predictions are incorrect. The features are unable to develop accurate relationship.
-![](Images_Course2/img3.png)
-![](Images_Course2/img4.png)
-![](Images_Course2/img5.png)
+![](./Images_Course2/img3.png)
+![](./Images_Course2/img4.png)
+![](./Images_Course2/img5.png)
 
 - This analysis is totally based on the assumption that human error is nearly 0% in detecting error. If human error is 15% then the criteria will be different.
 # Basic Recipe for ML
@@ -58,7 +58,7 @@
 - L2 regularization is generally used. 
 - Lambda here is a regularization parameter and we set this using the development set where you try a variety of values to see what is best. Lambda is another hyperparameter that we tune. 
 - **Note- lambda is a keyword in Python so while coding we will represent it using lambd.**
-![](Images_Course2/img7.png)
+![](./Images_Course2/img7.png)
 - This is the case of a logistic regression model. Let's discuss deep neural networks where the loss function is a function of many parameters.
 - Here the norm is the sum of all the elements of the weight matrix squared.
 - This matrix norm is called as Frobenius norm of the matrix, denoted with subscript F.
@@ -67,13 +67,13 @@
 - We just need an extra regularization term with our previous backdrop term.
 - Because of this extra term, L2 regularization is also known as weight decay because this extra term makes the matrix w a little bit smaller.
 - If we take W common so we come to know that we are just multiplying the matrix W by a number less than 1 hence it is known as weight decay.
-![](Images_Course2/img8.png)
+![](./Images_Course2/img8.png)
 # Why does regularization help with overfitting
 - Let's see a neural network which is currently overfitting.
 - What we did for regularizing is add this extra term that penalizes the weight matrices from being too large.
 - if lambda is too big then, weight matrices will be close to zero. One thing that can happen is that will make the weights so close to zero for a lot of hidden units such as zeroing out the impact of these hidden units.
 - It almost becomes like a logistic regression unit. As a result of a smaller network, overfitting decreases to a high bias case and there will be some values of lambda for which the right case happens.
-![](Images_Course2/img9.png)
+![](./Images_Course2/img9.png)
 - Another way to think about how regularization decreases overfitting is:-
 - Assume we are using the tanh activation function.
 - From the graph, we can see that when z is very small tanh function is almost linear.
@@ -83,7 +83,7 @@
 - In dropout regularization, we will set some probability of eliminating a node in a neural network. Like we have a 0.5 chance of keeping a node and a 0.5 chance of eliminating a node.
 - Then, we eliminate those nodes and we end up with a smaller network. 
 - On every iteration, we eliminate some nodes and hence we do backprop on a smaller network. 
-![](Images_Course2/img10.png)
+![](./Images_Course2/img10.png)
 ## How to implement dropout
 - There are few ways to implement it but there is a technique called inverted dropout. 
 - Let's illustrate with layer l=3
@@ -95,7 +95,7 @@
 - What this does for every element of d3 which is zero it will make the corresponding activation of that hidden unit also zero. Hence d3 ends up zeroing out the corresponding element of d3.
 - Then, finally, we will take a3 and scale it up by 0.8 which is keep_prob. We will do this by dividing a3 by 0.8. This compensates for the effect of zeroing out of hidden units. And also ensures that the expected value of a3 remains the same.
 - This is known as the inverted dropout technique, dividing by keep_prob.
-![](Images_Course2/img11.png)
+![](./Images_Course2/img11.png)
 - This inverted dropout technique makes test time easier because you have less of a scaling problem. 
 - **We will not use dropout during the test**.
 - Even if we don't make a dropout in the test case, the expected value of activation is the same, because there we divided by 0.8 to keep the activation same.
@@ -109,13 +109,13 @@
 - One limitation of the dropout regularization is that the cost function is not properly defined and it changes at every iteration. 
 - Hence the graph of J vs. no of iteration is less well defined and hard to calculate.
 - So, turn off dropout that is keep_prob = 1 and check J is decreasing monotonically, and then turn on dropout. 
-![](Images_Course2/img12.png)
+![](./Images_Course2/img12.png)
 
 # Other Regularization Techniques
 1. Data Augmentation
-Let's say we build a cat classifier and there is overfitting, then one way to handle is to get more data. But getting more data is expensive and requires a lot of effort, one thing we can do to increase the size of the training set is to rotate the cat Images_Course2 or take random crops of it and insert it in the training set.
+Let's say we build a cat classifier and there is overfitting, then one way to handle is to get more data. But getting more data is expensive and requires a lot of effort, one thing we can do to increase the size of the training set is to rotate the cat ./Images_Course2 or take random crops of it and insert it in the training set.
 - This is not as effective as directly adding a brand new image to training set but we are also saving our expense here.
-![](Images_Course2/img13.png)
+![](./Images_Course2/img13.png)
 
 2. Early Stopping
 - We plot a graph of the cost function and dev set error, what happens in case of a dev set error is that it decreases at first but then starts to increase after a few iterations. 
@@ -141,7 +141,7 @@ Let's say we build a cat classifier and there is overfitting, then one way to ha
 -  Now, we will end up with the variance of both the input feature as 1.
 - Note- If you use this to scale your training data, then use the same mean and sigma to normalize your test set as well. This is because you don't want to normalize the training and test set differently.
 - Use the sigma and mean value in both.
-![](Images_Course2/img14.png)
+![](./Images_Course2/img14.png)
 ## Why Normalize the inputs?
 - If we use unnormalized input features then it's more likely that the cost function will be very squished out which is a very elongated cost function.
 - If we normalize our input features then the cost function will look more symmetric.
@@ -149,7 +149,7 @@ Let's say we build a cat classifier and there is overfitting, then one way to ha
 - On the other hand, if the cost function is like the one on the right, then we can keep a high learning rate because wherever we start gradient descent will always go towards the minima.
 - If the range of input features is almost the same, then the normalization would not increase the performance much.
 - Always do normalization no matter even if the input features are almost in the same range.
-![](Images_Course2/img15.png)
+![](./Images_Course2/img15.png)
 
 # Vanishing/Exploding Gradient
 - One of the problems with training deep neural networks is data vanishing and data exploding what that means is that when you are training a very deep neural network then your derivatives or your slopes can sometimes get very big or very small and this makes training difficult.
@@ -166,13 +166,13 @@ Let's say we build a cat classifier and there is overfitting, then one way to ha
 - Similarly, we can prove that with derivatives the same thing occurs.
 - This increasing and decreasing is a function of the number of layers.
 - If gradients become small, then gradient descent will take very small steps.
-![](Images_Course2/img18.png)
+![](./Images_Course2/img18.png)
 ## Weight Initialization for Deep Neural Networks
 - We can partially solve this problem by careful random initialization of weights.
 - For now, let's say b is zero.
 - In order for z to not become too large and not become too small, we notice that the larger the n is the smaller the W you want to be.
 - One thing we can do is to make the variance equal to 1/n where n is the no of input features going into the neuron.
-![](Images_Course2/img16.png)
+![](./Images_Course2/img16.png)
 - It turns out that if you are using a RELu activation function, then rather than 1/n, 2/n is a better option.
 - If we multiply our random weight matrix with the square root of this, we end up with the required variance.
 - So, if the input features have a mean of zero and standard deviation of 1, then z will also take on the same scale.
@@ -180,7 +180,7 @@ Let's say we build a cat classifier and there is overfitting, then one way to ha
 - If our activation function is tanh then, instead of 2 in numerator, we generally take 1. This is known as Xavier initialization.
 - There is another formula as shown in the right middle but is generally not used.
 - So another thing we can tune in our hyperparameter is this term.
-![](Images_Course2/img17.png)
+![](./Images_Course2/img17.png)
 
 # Gradient Checking
 - This will help us to figure out if our implementation of the backdrop is correct or not.
@@ -190,11 +190,11 @@ Let's say we build a cat classifier and there is overfitting, then one way to ha
 - Here g(theta) is the derivative of f(theta).
 - The two-sided difference result is as shown.
 - It is approximately equal to the actual derivative.
-![](Images_Course2/img19.png)
+![](./Images_Course2/img19.png)
 - If we take a one-sided difference then, the approximation error is 0.03
 - Hence, a two-sided difference is better as it gives less error.
 - It is slower than one-side difference but still prefer this.
-![](Images_Course2/img20.png)
+![](./Images_Course2/img20.png)
 - Let's see how we can use this to check the correctness of the backdrop.
 # Checking
 1. We will reshape all our parameters and then we will concatenate them into a giant vector theta.
@@ -212,8 +212,8 @@ To implement Grad check what we will do is implement a loop for each component o
 - Generally, we use epsilon = 10^-7
 - And if the formula gives us a value of 10^-7 or smaller, then that's great.
 - If the value is 10^-5, then have a careful look at your vector and confirm that none of the components is very large. If a component is large, then there might be a bug in your backdrop algo and use that component to track down the bug.
-![](Images_Course2/img22.png)
-![](Images_Course2/img23.png)
+![](./Images_Course2/img22.png)
+![](./Images_Course2/img23.png)
 
 ## How to implement gradient checking
 - Computing d(theta)i for all values of i does very slow computation.
@@ -227,7 +227,7 @@ To implement Grad check what we will do is implement a loop for each component o
 - Grad check doesn't work with dropout regularization because there the cost function J is very difficult to compute.
 - So implement grad check without dropout and check whether your algo is correct without dropout, for that set keep_prob=1 and then turn on dropout and check that the implementation of dropout is correct.
 - Sometimes, this happens that your implementation of gradient descent is correct when w is close to 0 and as we run gradient descent w and b become bigger and larger. So one thing we could do is to run a grad check at random initialisation and then train the network for a while so that w and b get some time to wander away from 0 and then do a grad check again. 
-![](Images_Course2/img21.png)
+![](./Images_Course2/img21.png)
 
 
 # Important Points
@@ -242,7 +242,7 @@ A well-chosen initialization can:
 ## We will practice the following initialization techniques:-
 
 1. Zeros initialization_ -- setting `initialization = "zeros"` in the input argument. ----> **Worst**
-![](Images_Course2/img24.png)
+![](./Images_Course2/img24.png)
 **What you should remember**:
 
 - The weights 𝑊[𝑙]�[�] should be initialized randomly to break symmetry.
@@ -260,25 +260,25 @@ A well-chosen initialization can:
 - Initializing with small random values should do better.
 The main difference between Gaussian variable (`numpy.random.randn()`) and uniform random variable is the distribution of the generated random numbers:
 
-- numpy.random.rand() produces numbers in a [uniform distribution](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/Images_Course2/rand.jpg).
-- and numpy.random.randn() produces numbers in a [normal distribution](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/Images_Course2/randn.jpg).
+- numpy.random.rand() produces numbers in a [uniform distribution](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/./Images_Course2/rand.jpg).
+- and numpy.random.randn() produces numbers in a [normal distribution](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/./Images_Course2/randn.jpg).
 
 When used for weight initialization, randn() helps most the weights to Avoid being close to the extremes, allocating most of them in the center of the range.
 
-An intuitive way to see it is, for example, if you take the [sigmoid() activation function](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/Images_Course2/sigmoid.jpg).
+An intuitive way to see it is, for example, if you take the [sigmoid() activation function](https://raw.githubusercontent.com/jahnog/deeplearning-notes/master/Course2/./Images_Course2/sigmoid.jpg).
 
 You’ll remember that the slope near 0 or near 1 is extremely small, so the weights near those extremes will converge much more slowly to the solution, and having most of them near the center will speed the convergence.
 
 3. He initialization_ -- setting `initialization = "he"` in the input argument. This initializes the weights to random values scaled according to a paper by He et al., 2015. -----> best
 - "He Initialization"; is named for the first author of He et al., 2015. (If you have heard of "Xavier initialization", this is similar except Xavier initialization uses a scaling factor for the weights 𝑊[𝑙]�[�] of `sqrt(1./layers_dims[l-1])`where He initialization would use `sqrt(2./layers_dims[l-1])`.)
-![](Images_Course2/img25.png)
-![](Images_Course2/img26.png)
+![](./Images_Course2/img25.png)
+![](./Images_Course2/img26.png)
 
 ## Regularization
 
-![](Images_Course2/img27.png)
+![](./Images_Course2/img27.png)
 - Since we are changing the cost, backpropagation derivatives will also change.
-![](Images_Course2/img28.png)
+![](./Images_Course2/img28.png)
 **Observations**:
 
 - The value of 𝜆� is a hyperparameter that you can tune using a dev set.
@@ -296,8 +296,8 @@ L2-regularization relies on the assumption that a model with small weights is si
 - There are extra terms in the gradients with respect to weight matrices.
 - Weights end up smaller ("weight decay"):
 - Weights are pushed to smaller values.
-![](Images_Course2/img29.png)
-![](Images_Course2/img30.png)
+![](./Images_Course2/img29.png)
+![](./Images_Course2/img30.png)
 - A **common mistake** when using dropout is to use it both in training and testing. You should use dropout (randomly eliminate nodes) only in training.
 - Deep learning frameworks like [TensorFlow](https://www.tensorflow.org/api_docs/python/tf/nn/dropout), [PaddlePaddle](https://www.paddlepaddle.org.cn/documentation/docs/en/api/paddle/nn/Dropout_en.html#dropout), [Keras](https://keras.io/api/layers/regularization_layers/dropout/) or [caffe](https://caffe.berkeleyvision.org/doxygen/classcaffe_1_1DropoutLayer.html) come with a dropout layer implementation. Don't stress - you will soon learn some of these frameworks.
 **What you should remember about dropout:**
@@ -308,8 +308,8 @@ L2-regularization relies on the assumption that a model with small weights is si
 - During training time, divide each dropout layer by keep_prob to keep the same expected value for the activations. For example, if keep_prob is 0.5, then we will on average shut down half the nodes, so the output will be scaled by 0.5 since only the remaining half are contributing to the solution. Dividing by 0.5 is equivalent to multiplying by 2. Hence, the output now has the same expected value. You can check that this works even when keep_prob is other values than 0.5.
 
 # Gradient Checking
-![](Images_Course2/img31.png)
-![](Images_Course2/img32.png)
+![](./Images_Course2/img31.png)
+![](./Images_Course2/img32.png)
 
 # Optimization Algorithms
 - What we are doing till now, is that we train our neurons for all the training data and then, perform the gradient descent step.
@@ -319,11 +319,11 @@ L2-regularization relies on the assumption that a model with small weights is si
 - Let's say there are 1,000 examples only in one mini-batch.
 - We will denote the mini-batches with X superscript curly braces.
 - If the whole training set is of 5,000,000 examples, then there are 5,000 mini-batches.
-![](Images_Course2/img33.png)
+![](./Images_Course2/img33.png)
 - To implement this we will run a loop for 5000 times because there are 5000 mini batches and in each loop we will take a gradient descent step.
-![](Images_Course2/img34.png)
+![](./Images_Course2/img34.png)
 - In mini-batch gradient descent, we take many gradient descent steps in one pass over the training set.
-![](Images_Course2/img35.png)
+![](./Images_Course2/img35.png)
 - In batch gradient descent cost always decreases, but in mini-batch gradient descent cost might increase in some mini batch and then decrease in other but as a whole the cost decreases.
 # Choosing your mini-batch
 - If the mini-batch size is m, then we end up with batch gradient descent.
@@ -338,7 +338,7 @@ L2-regularization relies on the assumption that a model with small weights is si
 - We get the fastest learning this way. We don't need to wait for learning before reading the entire training set.
 - For small training sets use batch gradient descent for example size less than 2000.
 - Best Mini batch size is in 2 to the power starting from 6.(2^6).
-![](Images_Course2/img36.png)
+![](./Images_Course2/img36.png)
 - make sure your mini batches fit your CPU or GPU memory.
 - Therefore mini-batch size is another hyperparameter to tune.
 
@@ -347,7 +347,7 @@ L2-regularization relies on the assumption that a model with small weights is si
 - The shown data is noisy.
 - If we want to compute the weighted average we will do as shown.
 - If we compute as shown we will get the moving or exponentially weighted average of the daily temperature.
-![](Images_Course2/img37.png)
+![](./Images_Course2/img37.png)
 - We can think of Vt as averaging over 1/1-beta days temperature.
 - For example, when beta = 0.9, we can think of beta as averaging over last 10 days example, the red line is for beta = 0.9 and if beta = 0.98, then 1/1-beta is 50, this is taking the average over the last 50 days. The green line is for beta = 0.98.
 - When beta is high, the plot we get is much smoother because we are averaging over more days of temperature so less noise.
@@ -357,8 +357,8 @@ L2-regularization relies on the assumption that a model with small weights is si
 - This is because when the beta is high that is 0.98, then it gives a lot of weight to the previous value and a lot less weight (0.02) to the current value.
 - Therefore, when temperature changes and beta is large, then the exponentially weighted average adapts more slowly.
 - If we plot for beta = 0.5, then we get the graph as shown by yellow.
-![](Images_Course2/img38.png)
-![](Images_Course2/img39.png)
+![](./Images_Course2/img38.png)
+![](./Images_Course2/img39.png)
 - By averaging over two days temperature, then more noise but it adapts quickly to temperature changes.
 - The red curve is a better average than the yellow or the blue curve.
 ## How is it computing averages of the daily temperature?
@@ -372,10 +372,10 @@ It takes about 10 days for that constant to decay to about 1/3rd or around 1/e o
 - It is because of this reason that when the beta is equal to 0.9 we say that we are computing an exponentially weighted average of the last 10 days because after that the weight decays to less than about 1/3rd of the current day's weight.
 - for beta = 0.98, turning that 0.98 to the power of 50 is approx = 1/e therefore we can think for beta = 0.98 to be averaging over about the last 50 days' temperature.
 - We can find the average no of days by 1/1-beta where 1-beta is epsilon only.
-![](Images_Course2/img40.png)
+![](./Images_Course2/img40.png)
 - Implementation is on the right of the next image.
 - Exponentially weighted average takes very little space, we just need a single variable V to store the average.
-![](Images_Course2/img41.png)
+![](./Images_Course2/img41.png)
 - This is not the best or the most accurate way to compute averages but if we compute averages like we always do then we would have to maintain the note of all the temperature and is complicated to implement. 
 
 # Bias Correction 
@@ -386,7 +386,7 @@ It takes about 10 days for that constant to decay to about 1/3rd or around 1/e o
 - Instead of Vt take, Vt/1-beta^t
 - This removes the bias.
 - When t is large, the beta^t is very small, hence denominator almost approaches 1. Hence when t is large, the bias correction won't make any difference and it is good because when t is big we already get the expected results.
-![](Images_Course2/img42.png)
+![](./Images_Course2/img42.png)
 
 # Gradient descent with momentum 
 - Gradient descent with a momentum algorithm always works faster than the general gradient descent.
@@ -401,8 +401,8 @@ It takes about 10 days for that constant to decay to about 1/3rd or around 1/e o
 - **Bias Correction** - We don't usually do this because after just 10 iterations there is no need of it.
 - VdW and Vdb has same dimensions as dW and db.
 - Sometimes the (1-beta) term is omitted as it compensated in the learning rate.
-![](Images_Course2/img43.png)
-![](Images_Course2/img44.png)
+![](./Images_Course2/img43.png)
+![](./Images_Course2/img44.png)
 # RMSprop 
 - It stands for Root Mean Square prop and it can also speed up gradient descent.
 - Consider the horizontal axis as w and the vertical axis as b, Actually, the axis could of anything but for the sake of intuition we can think of it like this, so now we want to slow down the learning in the b direction and speed it up in the w direction.
@@ -412,7 +412,7 @@ It takes about 10 days for that constant to decay to about 1/3rd or around 1/e o
 - Here, we can also use a larger learning rate.
 - Here, instead of calling beta, let's call it beta subscript 2.
 - Just to make sure SdW and Sdb are not zero we add a very small number of epsilon while dividing to maintain numerical stability.
-![](Images_Course2/img44.png)
+![](./Images_Course2/img44.png)
 # Adam optimization Algorithm
 - If we put RMSprop and momentum algorithm together, we get an even much better algorithm.
 - In typical Adam optimization, we also do bias correction.
@@ -423,8 +423,8 @@ It takes about 10 days for that constant to decay to about 1/3rd or around 1/e o
 - Beta1 is used for computing the mean of the derivatives. This is the first moment.
 - Beta2 is used for computing the exponentially weighted average of the squares.
 This is known as the second moment.
-![](Images_Course2/img45.png)
-![](Images_Course2/img46.png)
+![](./Images_Course2/img45.png)
+![](./Images_Course2/img46.png)
 # Learning Rate Decay
 - Learning rate decay means slowly decreasing your learning rate over time.
 - In mini-batch gradient descent, our algorithm will never reach the minimum but will keep wandering around the minimum.
@@ -432,11 +432,11 @@ This is known as the second moment.
 - Initially, when alpha is big, it will take big steps then alpha keeps on decreasing and converges better.
 - There are many ways to implement learning rate decay.
 - Keeping learning rate as a function of epoch, learning rate gradually decreases.
-![](Images_Course2/img48.png)
-![](Images_Course2/img49.png)
+![](./Images_Course2/img48.png)
+![](./Images_Course2/img49.png)
 - There are other ways to implement this.
 - Sometimes when the training is too long, manually decaying of learning rate is also an option. 
-![](Images_Course2/img50.png)
+![](./Images_Course2/img50.png)
 
 # The problem of local optima
 - In the past, we used to think of local optima by considering a 2D plane. But it isn't correct.
@@ -449,22 +449,22 @@ This is known as the second moment.
 - The actual problem is of plateau. 
 - A plateau is a region where the derivative is close to zero for a long time. 
 - This is where algorithms like Adam help a lot.
-![](Images_Course2/img51.png)
-![](Images_Course2/img52.png)
+![](./Images_Course2/img51.png)
+![](./Images_Course2/img52.png)
 # Important points
 
-![](Images_Course2/img53.png)
-![](Images_Course2/img54.png)
-![](Images_Course2/img55.png)
+![](./Images_Course2/img53.png)
+![](./Images_Course2/img54.png)
+![](./Images_Course2/img55.png)
 - Shuffling and Partition are two steps to build mini batches and powers of 2 are often chosen to be mini_batch_size.
-![](Images_Course2/img56.png)
+![](./Images_Course2/img56.png)
   
 - The velocity is initialized with zeros. So the algorithm will take a few iterations to "build up" velocity and start to take bigger steps.
 - **How do you choose 𝛽�?**
    - The larger the momentum 𝛽� is, the smoother the update, because it takes the past gradients into account more. But if 𝛽� is too big, it could also smooth out the updates too much.
    - Common values for 𝛽� range from 0.8 to 0.999. If you don't feel inclined to tune this, 𝛽=0.9�=0.9 is often a reasonable default.
    - Tuning the optimal 𝛽� for your model might require trying several values to see what works best in terms of reducing the value of the cost function 𝐽�.
-![](Images_Course2/img57.png)
+![](./Images_Course2/img57.png)
 Momentum usually helps, but given the small learning rate and the simplistic dataset, its impact is almost negligible.
 On the other hand, Adam clearly outperforms mini-batch gradient descent and Momentum. If you run the model for more epochs on this simple dataset, all three methods will lead to very good results. However, you've seen that Adam converges a lot faster.
 Some advantages of Adam include:
@@ -500,17 +500,17 @@ In the case of Adam, notice that the learning curve achieves a similar accuracy 
 - The hyperparameters in yellow are the second important hyperparameters.
 - The ones in purple are the third most important.
 - The values for beta1, beta2 and epsilon never needs to be tuned.
-- ![](Images_Course2/img58.png)
+- ![](./Images_Course2/img58.png)
 - In earlier times, if we wanted to tune two hyperparameters, we used a grid(the left one). The points were sampled in a grid.
 - Then, we try out all 25 points and pick up whichever hyperparameter works best.
 - But, in deep learning choose the points at random and try out all different values.
 - It's difficult to know which hyperparameter is going to be the most important for our problem. Some hyperparameters are more important than others.
 - For example, if the right vertical axis is alpha, then we are only trying 5 values for it on a total of 25 models. But on the right all 25 models have different alpha.
 - In practice, there could be many more hyperparameters.
-![](Images_Course2/img59.png)
+![](./Images_Course2/img59.png)
 ## Coarse to fine sampling scheme
 - Firstly, we will find the best tuning and then zoom on it and try out more sample points and try to find the best one in that region.
-![](Images_Course2/img60.png)
+![](./Images_Course2/img60.png)
 ## Using an appropriate scale to pick hyperparameters
 - Sampling at random doesn't mean sampling uniformly at random.
 - Instead, it's important to pick the appropriate scale.
@@ -522,8 +522,8 @@ In the case of Adam, notice that the learning curve achieves a similar accuracy 
 ### Let's see how the sampling of beta is done
 - The range of beta is 0.9 - 0.999.
 - Let's find the value for 1 - beta which is going to range from 0.1 - 0.001.
-![](Images_Course2/img61.png)
-![](Images_Course2/img62.png)
+![](./Images_Course2/img61.png)
+![](./Images_Course2/img62.png)
 
 ## Babysitting one model
 - We do this when the dataset is big but we don't have a lot of CPUs and GPUs, so we can basically afford to train only one model at a time.
@@ -533,15 +533,15 @@ In the case of Adam, notice that the learning curve achieves a similar accuracy 
 ### Training many models in parallel
 - We will run different models parallely with different hyperparameter settings and will stick with the one which works the best.
 - Let's call the babysitting approach pandas and the other caviar and the way to choose between these is a function of how many computational resources we have.
-![](Images_Course2/img63.png)
+![](./Images_Course2/img63.png)
 
 # Batch Normalization 
 - We know that normalizing the input features helps a lot in learning. We only understood normalizing the input features.
 - For a deeper model if we normalize the activations then training of the subsequent layer will be faster. 
 - How to normalize a[2] to make the training of W[3] and b[3] faster. 
 - We will normalize the values of z[2] and not of a[2].
-![](Images_Course2/img64.png)
-![](Images_Course2/img65.png)
+![](./Images_Course2/img64.png)
+![](./Images_Course2/img65.png)
 After this, every unit of z has a mean of 0 and a variance of 1.
 - But, we don't want our hidden units to always have mean 0 and variance 1. It makes more sense for hidden units to have a different distribution. 
 - So, we will find Z tilde after Z norm.
@@ -553,24 +553,24 @@ After this, every unit of z has a mean of 0 and a variance of 1.
 - So, what batch norm does is it normalizes the mean and variance of these hidden unit values to have some fixed mean and variance. The values could be anything and are controlled by lambda and beta.
 - **Note - This beta is different from Adam optimization algo beta**
 ### Let's see how to compute batch norms for deep network
-![](Images_Course2/img66.png)
+![](./Images_Course2/img66.png)
 - **Note - When we use a deep learning framework then we don't have to implement the batch norm ourselves. We just have to write one line.**
 - Usually, the batch norm is applied with mini-batches.
 - While computing Z we add the bias term but in batch norm bias has no meaning because bias is a constant which is added to all the terms and while computing mean and then subtracting it from Z will just cancel out its effect. So, we will remove bias while computing Z.
 - Therefore, while computing batch norm we can eliminate the parameter bias.
 - It is sort of replaced by beta L. It affects shift or the bias terms.
 - Beta and gamma are used to scale the mean and variance of each of the hidden units.
-![](Images_Course2/img67.png)
-![](Images_Course2/img68.png)
+![](./Images_Course2/img67.png)
+![](./Images_Course2/img68.png)
 # What does Batch norm do
 - The batch norm speeds up the algorithm in the same way as normalizing the input features does. Normalizing the input features makes them to have the same range and hence the learning speed is increased.
 - It makes the weights deeper in our network more robust to changes in earlier layers of our network.
-- Let's say we trained a neural network on cat detection and we only input black cat Images_Course2.
+- Let's say we trained a neural network on cat detection and we only input black cat ./Images_Course2.
 - If we now try to apply this NN on colourful cats, then the cost function will not perform well.
 - Therefore if our training set looks like this where the positive examples are on one side and the negative on the other and we try to generalize it on some other set, then the NN will not perform better.
 - This idea of data distribution changing goes by the name of covariate shift.
 - The idea is that if you have learned some X to Y mapping and if the distribution of X changes then you might have to retrain your learning algorithm.
-- ![](Images_Course2/img69.png)
+- ![](./Images_Course2/img69.png)
 ## Let's see why this is a problem with NN
 - Let's say we are calculating the parameters W[3] and b[3]. It takes activations from the previous layer. The activations of the previous layer itself depend upon the parameters of its previous layer and therefore it is continuously changing at every iteration. 
 - Hence the problem of covariate shift is faced by W[3] and b[3].
@@ -583,41 +583,41 @@ After this, every unit of z has a mean of 0 and a variance of 1.
 - We know that in batch norm the value Z[l] is scaled by the values computed in just that mini batch. Hence there is a bit of noise in that. Therefore, the scaling process is noisy as well.
 - So similar to dropout it has some noise in that hidden layer activation.
 - Because by adding noise to the hidden units, it's forcing the downstream hidden units not to rely too much on any one hidden unit.
-- ![](Images_Course2/img70.png)
+- ![](./Images_Course2/img70.png)
 # Batch norm at test time
 - Batch norm processes the data one mini-batch at a time.
 - But at the test time, you might need to process the examples one at a time.
 - Here, mu and sigma squared are computed on the entire mini-batch. 
 - In typical NN we estimate the mu and sigma squared for the test using exponentially weighted average where the average is across the mini batches while training.
-- ![](Images_Course2/img71.png)
+- ![](./Images_Course2/img71.png)
 
 # Softmax Regression
 - It is used when we have multiple possible classes.
 - Here, the number of units in the output layer is equal to number of classes.
-- ![](Images_Course2/img72.png)
-- ![](Images_Course2/img73.png)
+- ![](./Images_Course2/img72.png)
+- ![](./Images_Course2/img73.png)
 - Softmax activation function takes in a vector and output a vector.
-![](Images_Course2/img74.png)
+![](./Images_Course2/img74.png)
 # Training a Softmax Classifier
 - The largest element ends up being the biggest probability.
 - This is called softmax because it is in contrast with the hardmax. 
 - In hardmax, the biggest element gets one and the rest all 0.
 - If the number of classes is 2, then softmax is just computing the way logistic regression will compute.
 - Because in case of 2 classes our output vector will have 2 values which sum to zero and since they sum to zero we only need to keep track of one value and hence it is the same as in logistic regression. 
-- ![](Images_Course2/img75.png)
+- ![](./Images_Course2/img75.png)
 - In case of softmax activation function cost function is like shown below:-
-![](Images_Course2/img76.png)
-![](Images_Course2/img77.png)
+![](./Images_Course2/img76.png)
+![](./Images_Course2/img77.png)
 For Y to be like the above vector we usually do one hot encoding.
-![](Images_Course2/img78.png)
+![](./Images_Course2/img78.png)
 # Programming Framework
 - In these frameworks, we only focus on getting the forward prop right and then the framework will figure out by itself how to compute the backprop.
 - For implementing very large models we use programming frameworks.
-- ![](Images_Course2/img79.png)
+- ![](./Images_Course2/img79.png)
 
 # Tensorflow
 - Let's say we have a cost function which we want to minimize using TensorFlow.
-- ![](Images_Course2/img80.png)
+- ![](./Images_Course2/img80.png)
 - For minimizing J ----> w = 5. But we will use TensorFlow for that.
 - Because the same structure can be used to minimize cost which is a function of multiple parameters.
 - To signify that w is a variable in TensorFlow we will use, 
@@ -651,7 +651,7 @@ grads = tape.gradient(cost, trainable_variable)
 optimizer.apply_gradients(zip(grads, trainable variables))
 ```
 - Zip variable is a Python function to pair up the corresponding elements of the two lists.
-- ![](Images_Course2/img81.png)
+- ![](./Images_Course2/img81.png)
 - Till now, our cost function was just a function of parameter w.
 - Let's say cost function is not just a function of parameter w but it also depends upon the training data.
 - Let's say x is our data. Here, we define it as a list of numbers. For this example let's say x has our coefficients.
@@ -659,8 +659,8 @@ optimizer.apply_gradients(zip(grads, trainable variables))
 optimizer.minimize(cost, trainvariables)
 ```
 This is a short syntax for doing back prop and computing gradient and updating the parameters.
-![](Images_Course2/img82.png)
-![](Images_Course2/img83.png)
+![](./Images_Course2/img82.png)
+![](./Images_Course2/img83.png)
 # Important Points
 ## 2 - Basic Optimization with GradientTape[](https://bctsvvwolxfp.labs.coursera.org/notebooks/release/W3A1/Tensorflow_introduction.ipynb#2---Basic-Optimization-with-GradientTape)
 
@@ -683,8 +683,8 @@ You might find the following functions helpful:
 - tf.matmul(..., ...) to do a matrix multiplication.
 - tf.add(..., ...) to do an addition.
 - Cast your tensor to type `float32` using `tf.cast`, then compute the sigmoid using `tf.keras.activations.sigmoid`.
-![](Images_Course2/img84.png)
-![](Images_Course2/img85.png)
+![](./Images_Course2/img84.png)
+![](./Images_Course2/img85.png)
 
 -  tf.math.add
 - tf.linalg.matmul
