@@ -3,13 +3,13 @@ import numpy as np
 import mediapipe as mp
 import time
 
-captureture = cv.VideoCapture(1)
+capture = cv.VideoCapture(1)
 
 mpHands = mp.solutions.hands
 Hands = mpHands.Hands()
 mpDraw = mp.solutions.drawing_utils
 while True:
-    ret, frame = captureture.read()
+    ret, frame = capture.read()
 
     ImgRGB = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
     results = Hands.process(ImgRGB)
@@ -34,5 +34,5 @@ while True:
     if cv.waitKey(20) & 0xFF == ord('d'):
         break
 
-captureture.release()
+capture.release()
 cv.destroyAllWindows()
