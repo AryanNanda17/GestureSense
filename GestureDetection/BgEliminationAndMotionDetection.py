@@ -6,6 +6,8 @@ import uuid
 import tensorflow as tf
 from tensorflow import keras
 import time
+import pyautogui
+import keyboard
 class MotionDetector:
 	def __init__(self, accumWeight=0.5):
 		self.accumWeight = accumWeight
@@ -26,10 +28,9 @@ class MotionDetector:
 			return None
 		return (thresh, max(cnts, key=cv.contourArea))
 
-MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/2")
-CLASS_NAMES = ['1finger','2finger','3finger','4finger','Fist','fingersclosein',
-			   'kitli','pinky','spreadoutpalm','thumbsdown','thumbsup','yoyo']
-
+MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/4")
+CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
+key_press = ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11']
 def predict(img):
 
     gray_image = cv.resize(img,(128,128))
@@ -45,11 +46,21 @@ def predict(img):
     return predicted_class
 
 capture = cv.VideoCapture(1)
+wCam, hCam = 640,480 
+
+screen_width, screen_height = pyautogui.size()
+capture.set(3, wCam)
+capture.set(4, hCam)
 ROI = "10,350,225,590"
 (top, right, bot, left) = np.int32(ROI.split(","))
 md = MotionDetector()
 numFrames = 0
 k = 0
+previous = "none"
+consecutive = 0
+mx = 0
+my = 0
+Centroid = 0
 while True:
 	
 	(grabbed, frame) = capture.read()
@@ -61,6 +72,7 @@ while True:
 	hand = roi.copy()
 	gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY)
 	gray = cv.GaussianBlur(gray, (3, 3), 0)
+	clone1 = None
 	if numFrames < 32:
 		md.update(gray)
 	else:
@@ -69,16 +81,43 @@ while True:
 		if skin is not None:
 			(thresh, c) = skin
 			masked = cv.bitwise_and(hand, hand, mask=thresh)
+			hsv = cv.cvtColor(masked, cv.COLOR_BGR2HSV)
+			lower_range = np.array([0, 20, 70], dtype=np.uint8)
+			upper_range = np.array([20, 255, 255], dtype=np.uint8)
+			mask = cv.inRange(hsv, lower_range, upper_range)
+			cv.imshow("hsv",mask)
 			cv.imshow("Mask", masked)
+
 			cv.drawContours(clone, [c + (right, top)], -1, (0, 255, 0), 2)
 			cv.imshow("Thresh", thresh)
-		
+			contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 			k = k+1
 			if(numFrames>230):
-                
-				prediction = predict(thresh)
-				print(prediction)
-				cv.putText(clone,str(prediction), (20,100),cv.FONT_HERSHEY_SIMPLEX,2, (255,0,255),1)
+				if len(contours) > 0:
+					largest_contour = max(contours, key=cv.contourArea)
+					Centroid = cv.moments(largest_contour)
+				if (Centroid["m00"] != 0):
+					mx = int(Centroid["m10"] / Centroid["m00"] + 1e-5)+350
+					my =  int(Centroid["m01"] / Centroid["m00"] + 1e-5)+10
+					cv.circle(clone, (mx,my), 5, (0, 0, 255), -1)
+					print(str(mx) +" " +str(my))
+				prediction = predict(mask)
+				index = CLASS_NAMES.index(prediction)
+				# print(prediction)
+				cv.putText(clone,str(prediction), (20,50),cv.FONT_HERSHEY_SIMPLEX,2, (255,0,255),2)
+				if(previous==prediction):
+					consecutive+=1
+				if(consecutive>50):
+					if(prediction=='2finger'):
+						
+						x1 = np.interp(mx,(right,wCam-right),(0,screen_width))
+						y1 = np.interp(my,(top,hCam-top),(0,screen_height))
+						pyautogui.moveTo(x1,y1)
+						cv.circle(clone,(int(x1),int(y1)),5,(255,0,255),-1)
+					pyautogui.press(key_press[index])
+					print(key_press[index])
+					consecutive = 0 
+				previous = prediction
 		cv.rectangle(clone, (left, top), (right, bot), (0, 0, 255), 2)
 	numFrames += 1
 	if numFrames >= 230:
@@ -88,6 +127,7 @@ while True:
 	else :
 		print (numFrames)
 		fl = 1
+
 	cv.imshow("Frame", clone)
 	key = cv.waitKey(1) & 0xFF
 
