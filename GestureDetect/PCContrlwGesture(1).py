@@ -7,15 +7,9 @@ import tensorflow as tf
 from tensorflow import keras
 import time
 import pyautogui
-import keyboard
-import screen_brightness_control as sbc
-from ctypes import cast,POINTER
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities,IAudioEndpointVolume
+from screen_brightness_control import get_brightness, set_brightness
+import time
 
-devices = AudioUtilities.GetSpeakers()
-interface = devices.Activate(IAudioEndpointVolume._iid_,CLSCTX_ALL,None)
-volume = cast(interface,POINTER(IAudioEndpointVolume))
 class MotionDetector:
 	def __init__(self, accumWeight=0.5):
 		self.accumWeight = accumWeight
@@ -36,9 +30,8 @@ class MotionDetector:
 			return None
 		return (thresh, max(cnts, key=cv.contourArea))
 
-MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/4")
+MODEL = tf.keras.models.load_model("C:/Users/mihir/Desktop/GestureSense/model")
 CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
-key_press = ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11']
 def predict(img):
 
     gray_image = cv.resize(img,(128,128))
@@ -104,14 +97,14 @@ while True:
 				if len(contours) > 0:
 					largest_contour = max(contours, key=cv.contourArea)
 					Centroid = cv.moments(largest_contour)
-				if (Centroid["m00"] != 0):
-					mx = int(Centroid["m10"] / Centroid["m00"] + 1e-5)+350
-					my =  int(Centroid["m01"] / Centroid["m00"] + 1e-5)+10
+				if (Centroid['m00'] != 0):
+					mx = int(Centroid['m10'] / Centroid['m00'] + 1e-5)+350
+					my =  int(Centroid['m01'] / Centroid['m00'] + 1e-5)+10
 					cv.circle(clone, (mx,my), 5, (0, 0, 255), -1)
 					print(str(mx) +" " +str(my))
 				prediction = predict(mask)
 				index = CLASS_NAMES.index(prediction)
-				# print(prediction)
+				
 				cv.putText(clone,str(prediction), (20,50),cv.FONT_HERSHEY_SIMPLEX,2, (255,0,255),2)
 				if(previous==prediction):
 					consecutive+=1
@@ -120,52 +113,29 @@ while True:
 						pyautogui.hotkey('alt', 'tab')
 					if(prediction=='pinky'):
 						pyautogui.click(button='right', clicks=1, interval=0.25)
-					if(prediction=='2finger'):
-						if(my>upper_threshold):
-							pyautogui.scroll(2)
-						if(my>lower_threshold):
-							pyautogui.scroll(2)
-					
 					if(prediction=="3finger"):
 						pyautogui.click(button='left', clicks=1)
-					if(prediction=="new"):
-						pyautogui.click(button='left', clicks=2, interval=0.25)
-					#if(prediction=='2finger'):
-						
-					#	x1 = np.interp(mx,(right,wCam-right),(0,screen_width))
-					#	y1 = np.interp(my,(top,hCam-top),(0,screen_height))
-					#	pyautogui.moveTo(x1,y1)
-					#	cv.circle(clone,(int(x1),int(y1)),5,(255,0,255),-1)
-					pyautogui.press(key_press[index])
-					print(key_press[index])
+					if(prediction=="yoyo"):
+						pyautogui.click(button='left', clicks=2, interval=0.25)								
 					consecutive = 0 
 				if(consecutive>150):
 					if(previous==prediction):
-						if(prediction == 'itlydown'):
-							current = volume.GetMasterVolumeLevelScalar()
-							if(current>0.05):
-								volume.SetMasterVolumeLevelScalar(current-0.05,None)
-							else:
-								continue
-						
-						if(prediction == 'yoyo'):
-							current = volume.GetMasterVolumeLevelScalar()
-							if(current<0.95):
-								volume.SetMasterVolumeLevelScalar(current+0.05,None)
-							else:
-								continue
+						if(prediction == 'italydown'):
+							pyautogui.press('volumedown')
+						if(prediction=='2finger'):
+							if(my>108):
+								pyautogui.scroll(2)
+							if(my<108):
+								pyautogui.scroll(-2)
+						if(prediction == 'thumbright'):
+							pyautogui.press('volumeup')
 						if(prediction=='spreadoutpalm'):
-							bright = sbc.get_brightness()
-							if(bright<100 and bright>=0):
-								sbc.set_brightness(bright+1)
-							if(bright==100):
-								continue
+							pyautogui.press('volumeup')
 						if(prediction =='fingersclosein'):
-							bright = sbc.get_brightness()
-							if(bright<=100 and bright>0):
-								sbc.set_brightness(bright-1)
-							if(bright == 0):
-								continue
+							current_brightness = get_brightness()
+							new_brightness = min(100, current_brightness[0] + 10)
+							set_brightness(new_brightness)
+						time.sleep(1.0)
 					else:
 						consecutive = 0				
 				previous = prediction
