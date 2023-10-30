@@ -8,6 +8,8 @@ from tensorflow import keras
 import time
 import pyautogui
 import keyboard
+from pynput.keyboard import Key, Controller
+keyboard = Controller()
 class MotionDetector:
 	def __init__(self, accumWeight=0.5):
 		self.accumWeight = accumWeight
@@ -27,18 +29,17 @@ class MotionDetector:
 		if len(cnts) == 0:
 			return None
 		return (thresh, max(cnts, key=cv.contourArea))
-
 MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/4")
 CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
-key_press = ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11']
+key_press = ['1','2','3','4','5','6','7','8','9','10','11']
 def predict(img):
 
     gray_image = cv.resize(img,(128,128))
-    rgb_image = np.zeros((gray_image.shape[0], gray_image.shape[1], 3), dtype=np.uint8)
-    rgb_image[:, :, 0] = gray_image  
-    rgb_image[:, :, 1] = gray_image  
-    rgb_image[:, :, 2] = gray_image  
-    img_batch = np.expand_dims(rgb_image, 0)
+    # rgb_image = np.zeros((gray_image.shape[0], gray_image.shape[1], 3), dtype=np.uint8)
+    # rgb_image[:, :, 0] = gray_image  
+    # rgb_image[:, :, 1] = gray_image  
+    # rgb_image[:, :, 2] = gray_image  
+    img_batch = np.expand_dims(gray_image, 0)
 
     predictions = MODEL.predict(img_batch)
     predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
@@ -47,7 +48,7 @@ def predict(img):
 
 capture = cv.VideoCapture(1)
 wCam, hCam = 640,480 
-
+# pyautogui.failSafeCheck = False
 screen_width, screen_height = pyautogui.size()
 capture.set(3, wCam)
 capture.set(4, hCam)
@@ -61,6 +62,10 @@ consecutive = 0
 mx = 0
 my = 0
 Centroid = 0
+kernel_size = 5
+kernel = np.ones((5, 5), np.uint8)
+ptime = 0
+fl1=0
 while True:
 	
 	(grabbed, frame) = capture.read()
@@ -85,8 +90,16 @@ while True:
 			lower_range = np.array([0, 20, 70], dtype=np.uint8)
 			upper_range = np.array([20, 255, 255], dtype=np.uint8)
 			mask = cv.inRange(hsv, lower_range, upper_range)
+			blurred_frame = cv.medianBlur(mask, kernel_size)
+			erosion_result = cv.erode(blurred_frame, kernel, iterations=1)
+			dilation_result = cv.dilate(erosion_result, kernel, iterations=1)
+			# closing = cv.morphologyEx(dilation_result, cv.MORPH_CLOSE, kernel)
+			# cv.imshow("blurred",blurred_frame)
+			# cv.imshow("erosion result",erosion_result)
+			cv.imshow("dilation_result",dilation_result)
 			cv.imshow("hsv",mask)
-			cv.imshow("Mask", masked)
+			
+			# cv.imshow("Mask", masked)
 
 			cv.drawContours(clone, [c + (right, top)], -1, (0, 255, 0), 2)
 			cv.imshow("Thresh", thresh)
@@ -101,24 +114,56 @@ while True:
 					my =  int(Centroid["m01"] / Centroid["m00"] + 1e-5)+10
 					cv.circle(clone, (mx,my), 5, (0, 0, 255), -1)
 					print(str(mx) +" " +str(my))
-				prediction = predict(mask)
+				prediction = predict(masked)
 				index = CLASS_NAMES.index(prediction)
-				# print(prediction)
+				
 				cv.putText(clone,str(prediction), (20,50),cv.FONT_HERSHEY_SIMPLEX,2, (255,0,255),2)
 				if(previous==prediction):
 					consecutive+=1
 				if(consecutive>50):
-					if(prediction=='2finger'):
-						
-						x1 = np.interp(mx,(right,wCam-right),(0,screen_width))
-						y1 = np.interp(my,(top,hCam-top),(0,screen_height))
+					if(prediction=='2finger' or fl1==1):
+						if(prediction=='spreadoutpalm'):
+							fl1=0
+						x1 = np.interp(mx,(right,wCam),(0,screen_width))
+						y1 = np.interp(my,(top,hCam),(0,screen_height))
 						pyautogui.moveTo(x1,y1)
 						cv.circle(clone,(int(x1),int(y1)),5,(255,0,255),-1)
-					pyautogui.press(key_press[index])
-					print(key_press[index])
+						if(prediction!='spreadoutpalm'):
+							fl1=1
+					if(prediction=='kitli'):
+						pyautogui.click(1100,200)
+						pyautogui.hotkey('l')
+					elif(prediction=='ThumbRight'):
+						pyautogui.click(1100,200)
+						pyautogui.hotkey('j')
+					elif(prediction=='fingersclosein'):
+						pyautogui.click(1100,500)
+						pyautogui.hotkey('space')
+					elif(prediction=='yoyo'):
+						pyautogui.moveTo(300,300)
+						pyautogui.hotkey('ctrl', 'right')
+					elif(prediction=='1finger'):
+						for _ in range(5):
+							keyboard.press(Key.media_volume_up)
+							keyboard.release(Key.media_volume_up)
+							time.sleep(0.2)
+					elif(prediction=='pinky'):
+						for _ in range(5):
+							keyboard.press(Key.media_volume_down)
+							keyboard.release(Key.media_volume_down)
+							time.sleep(0.2)
+					elif(prediction=='C'):
+						pyautogui.hotkey('f11')
+					elif(prediction=='3finger'):
+						pyautogui.click(1100,200)
+						pyautogui.scroll(3)
+					elif(prediction=='italydown'):
+						pyautogui.click(1100,200)
+						pyautogui.scroll(-3)
 					consecutive = 0 
 				previous = prediction
 		cv.rectangle(clone, (left, top), (right, bot), (0, 0, 255), 2)
+   
 	numFrames += 1
 	if numFrames >= 230:
 		if fl ==1:
@@ -127,7 +172,10 @@ while True:
 	else :
 		print (numFrames)
 		fl = 1
-
+	ctime = time.time()
+	fps = int(1/(ctime-ptime))
+	cv.putText(clone,str(fps), (20,200),cv.FONT_HERSHEY_SIMPLEX,2, (255,0,255),2)
+	ptime = ctime
 	cv.imshow("Frame", clone)
 	key = cv.waitKey(1) & 0xFF
 
