@@ -7,9 +7,8 @@ import tensorflow as tf
 from tensorflow import keras
 import time
 import pyautogui
-import keyboard
 from pynput.keyboard import Key, Controller
-keyboard = Controller()
+
 class MotionDetector:
 	def __init__(self, accumWeight=0.5):
 		self.accumWeight = accumWeight
@@ -29,9 +28,9 @@ class MotionDetector:
 		if len(cnts) == 0:
 			return None
 		return (thresh, max(cnts, key=cv.contourArea))
-MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/4")
+	
+MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/5")
 CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
-key_press = ['1','2','3','4','5','6','7','8','9','10','11']
 def predict(img):
 
     gray_image = cv.resize(img,(128,128))
@@ -130,7 +129,7 @@ while True:
 						cv.circle(clone,(int(x1),int(y1)),5,(255,0,255),-1)
 						if(prediction!='spreadoutpalm'):
 							fl1=1
-					if(prediction=='kitli'):
+					elif(prediction=='kitli'):
 						pyautogui.click(1100,200)
 						pyautogui.hotkey('l')
 					elif(prediction=='ThumbRight'):

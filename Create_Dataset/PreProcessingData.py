@@ -22,3 +22,4 @@ for imagePath in paths.list_images(args["Path"]):
 	(x, y, w, h) = cv.boundingRect(c)
 	crop = Threshold[y:y+h,x:x+w]
 	cv.imwrite(imagePath,crop)
+

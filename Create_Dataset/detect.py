@@ -24,19 +24,19 @@ class MotionDetector:
 		return (thresh, max(cnts, key=cv2.contourArea))
 	
 Images_Path = '/Users/Aryan/Documents/Projects/GestureSense/Create_Dataset'
-label = 'pinky'
+label = 'Index+Thumb'
 label_path = os.path.join(Images_Path, label)
 os.makedirs(label_path, exist_ok=True)
 
-camera = cv2.VideoCapture(1)
+capture = cv2.VideoCapture(1)
 ROI = "10,350,225,590"
 (top, right, bot, left) = np.int32(ROI.split(","))
 md = MotionDetector()
 numFrames = 0
 k = 0
-while True:
+while k<1500:
 
-	(grabbed, frame) = camera.read()
+	(grabbed, frame) = capture.read()
 	frame = imutils.resize(frame, width=600)
 	frame = cv2.flip(frame, 1)
 	clone = frame.copy()
@@ -55,6 +55,11 @@ while True:
 			(thresh, c) = skin
 			masked = cv2.bitwise_and(hand, hand, mask=thresh)
 			cv2.imshow("Mask", masked)
+			hsv = cv2.cvtColor(masked, cv2.COLOR_BGR2HSV)
+			lower_range = np.array([0, 20, 70], dtype=np.uint8)
+			upper_range = np.array([20, 255, 255], dtype=np.uint8)
+			mask = cv2.inRange(hsv, lower_range, upper_range)
+			cv2.imshow("hsv",mask)
 			name = os.path.join(label_path, '{}.jpg'.format(uuid.uuid1())) 
 			cv2.imwrite(name,masked)
 			cv2.drawContours(clone, [c + (right, top)], -1, (0, 255, 0), 2)
@@ -76,5 +81,5 @@ while True:
 	if key == ord("q"):
 		break
 
-camera.release()
+capture.release()
 cv2.destroyAllWindows()
