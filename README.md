@@ -4,9 +4,9 @@
 <h3 align = "center">
 
 </p>
-:movie_camera: Webcam-Based Hand Gesture Navigation for Enhanced Accessibility. :clapper:
+:movie_camera: Exploring all possible Deep Learning Models for Webcam-Based Hand <br>Gesture Navigation for Enhanced Accessibility. :clapper:
 
-**SRA - Eklavya 2023**<br></h3>
+[SRA](https://www.sravjti.in/) Eklavya 2023<br></h3>
 
 <hr>
 <details>
