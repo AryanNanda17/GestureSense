@@ -91,6 +91,46 @@ You can refer [this (Attention in Convolutional LSTM for Gesture Recognition)](h
 
 ### File Structure
 ```  
+.
+├── 3b1b notes
+│   ├── Deep Learning
+│   └── Linear Algebra
+├── Coursera Notes
+│   ├── Course_1 Neural Networks and Deep Learning (Coursera)
+│   ├── Course_2 Improving Deep Neural Networks
+│   └── Course_4 Convolutional Neural Networks
+├── Create_Dataset
+│   ├── PreProcessingData.py
+│   └── detect.py
+├── GestureDetection
+│   └── BgEliminationAndMotionDetection.py
+├── Hand Detection Using OpenCV
+│   ├── Background_subtractor_hand_detection.py
+│   └── Skin_Segmentation.py
+├── Keras_Models
+│   ├── 3DCNN_LSTM.ipynb
+│   ├── 3DCNN_LSTM_Pytorch.ipynb
+│   ├── GestureWiseMaverick_Masking.ipynb
+│   ├── GestureWiseMaverick_NoMasking.ipynb
+│   └── Yolo_MobileNet.ipynb
+├── Mnist From Scratch Using Jax and Numpy
+│   ├── JAX_4L_Autodiff_MNIST_IMPLEMENTATION.ipynb
+│   ├── JAX_4L_Without_Autodiff.ipynb
+│   ├── NumPy_2L.ipynb
+│   └── NumPy_4L.ipynb
+├── README.md
+├── ResNet-34
+│   ├── Assets
+│   ├── ResNets_34.ipynb
+│   └── Residual model paper.pdf
+├── Saved_Models
+│   ├── 1
+│   ├── 2
+│   ├── 3
+│   ├── 4
+│   └── 5
+└── environment.yml
+
 
 ```
 
