@@ -3,6 +3,7 @@ import imutils
 import numpy as np
 import os
 import uuid
+import argparse
 class MotionDetector:
 	def __init__(self, accumWeight=0.5):
 		self.accumWeight = accumWeight
@@ -23,8 +24,14 @@ class MotionDetector:
 			return None
 		return (thresh, max(cnts, key=cv2.contourArea))
 	
-Images_Path = '/Users/Aryan/Documents/Projects/GestureSense/Create_Dataset'
-label = 'Index+Thumb'
+ap = argparse.ArgumentParser()
+ap.add_argument("-p", "--path", required=True, help="Path to the directory where images will be saved")
+ap.add_argument("-l", "--label", required=True, help="Label for the images")
+args = vars(ap.parse_args())
+# Images_Path = '/Users/Aryan/Documents/Projects/GestureSense/Create_Dataset'
+# label = 'Index+Thumb'
+Images_Path = args["path"]
+label = args["label"]
 label_path = os.path.join(Images_Path, label)
 os.makedirs(label_path, exist_ok=True)
 

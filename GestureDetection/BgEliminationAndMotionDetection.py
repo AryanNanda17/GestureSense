@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 import time
 import pyautogui
+import argparse
 from pynput.keyboard import Key, Controller
 
 class MotionDetector:
@@ -29,8 +30,16 @@ class MotionDetector:
 			return None
 		return (thresh, max(cnts, key=cv.contourArea))
 	
-MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/5")
-CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
+# MODEL = tf.keras.models.load_model("/Users/Aryan/Documents/Projects/GestureSense/Models/5")
+# CLASS_NAMES = ['1finger','2finger','3finger','C','ThumbRight','fingersclosein','italydown','kitli','pinky','spreadoutpalm','yoyo']
+# Create an argument parser
+ap = argparse.ArgumentParser()
+ap.add_argument("-m", "--model_path", required=True, help="Path to the gesture recognition model")
+ap.add_argument("-c", "--class_names", required=True, nargs='+', help="List of class names for gesture recognition")
+args = vars(ap.parse_args())
+
+MODEL = tf.keras.models.load_model(args["model_path"])
+CLASS_NAMES = args["class_names"]
 def predict(img):
 
     gray_image = cv.resize(img,(128,128))
