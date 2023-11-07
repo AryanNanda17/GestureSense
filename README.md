@@ -291,7 +291,7 @@ Hence the setup of the Running Averages BgSubtraction Model is completed.
 
 * [Aryan Nanda](https://github.com/AryanNanda17) - nandaaryan823@gmail.com
 
-* [Mihir Gore](https://github.com/MihirGore23) - 
+* [Mihir Gore](https://github.com/MihirGore23) - mihirvgore@outlook.com
 
   
 
@@ -305,6 +305,6 @@ A special thanks to our mentors for this project:
   <br/>
 
 # License
-The [License](LICENSE) used in this project.
+The [LICENSE](LICENSE.txt) used in this project.
 
 ---
